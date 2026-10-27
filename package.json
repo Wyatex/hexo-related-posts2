@@ -1,6 +1,6 @@
 {
   "name": "hexo-related-posts2",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Blazing fast Hexo related posts plugin powered by BM25 vector cosine similarity and Worker Threads.",
   "type": "module",
   "main": "./dist/index.cjs",
