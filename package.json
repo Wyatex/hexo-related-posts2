@@ -41,6 +41,18 @@
   ],
   "author": "Wyatex <wyatex@qq.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=22.13.0",
+    "pnpm": ">=11.0.0"
+  },
+  "homepage": "https://github.com/Wyatex/hexo-related-posts2#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wyatex/hexo-related-posts2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Wyatex/hexo-related-posts2/issues"
+  },
   "peerDependencies": {
     "hexo": ">=7.0.0"
   },

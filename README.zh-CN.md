@@ -6,11 +6,11 @@
 基于现代 **BM25 稀疏向量余弦相似度模型** 与 **Node.js 多线程 Worker Threads** 驱动。
 
 [![npm version](https://img.shields.io/npm/v/hexo-related-posts2?color=3282e6&style=flat-square)](https://www.npmjs.com/package/hexo-related-posts2)
+[![CI](https://github.com/Wyatex/hexo-related-posts2/actions/workflows/ci.yml/badge.svg)](https://github.com/Wyatex/hexo-related-posts2/actions/workflows/ci.yml)
 [![node version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen?style=flat-square)](https://nodejs.org/)
 [![Hexo](https://img.shields.io/badge/Hexo-7.x%20%7C%208.x-blue?style=flat-square)](https://hexo.io/)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-0-success?style=flat-square)](https://www.npmjs.com/package/hexo-related-posts2)
-[![License](https://img.shields.io/github/license/wyatex/hexo-related-posts2?color=orange&style=flat-square)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-22%20passed-success?style=flat-square)](tests)
+[![License](https://img.shields.io/github/license/Wyatex/hexo-related-posts2?color=orange&style=flat-square)](LICENSE)
 
 [English](./README.md) • [简体中文](./README.zh-CN.md)
 
