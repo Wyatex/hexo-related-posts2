@@ -1,20 +1,21 @@
 {
-  "name": "tsdown-starter",
+  "name": "hexo-related-posts2",
+  "version": "1.0.0",
+  "description": "Blazing fast Hexo related posts plugin powered by BM25 vector cosine similarity and Worker Threads.",
   "type": "module",
-  "version": "0.0.0",
-  "description": "A starter for creating a TypeScript package.",
-  "author": "Author Name <author.name@mail.com>",
-  "license": "MIT",
-  "homepage": "https://github.com/author/library#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/author/library.git"
-  },
-  "bugs": {
-    "url": "https://github.com/author/library/issues"
-  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
   "exports": {
-    ".": "./dist/index.mjs",
+    ".": {
+      "types": {
+        "import": "./dist/index.d.mts",
+        "require": "./dist/index.d.cts",
+        "default": "./dist/index.d.cts"
+      },
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -23,14 +24,36 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "release": "bumpp",
     "prepublishOnly": "pnpm run build"
   },
+  "keywords": [
+    "hexo",
+    "hexo-plugin",
+    "related-posts",
+    "bm25",
+    "recommendation",
+    "nlp",
+    "intl-segmenter"
+  ],
+  "author": "Wyatex <wyatex@qq.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "hexo": ">=7.0.0"
+  },
+  "peerDependenciesMeta": {
+    "hexo": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@types/node": "^26.6.5",
     "bumpp": "^12.3.0",
+    "hexo": "^8.1.2",
+    "hexo-7": "npm:hexo@^7.3.0",
     "tsdown": "^0.23.1",
     "typescript": "^7.0.2",
     "vitest": "^5.0.5"
