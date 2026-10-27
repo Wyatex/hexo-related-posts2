@@ -1,25 +1,41 @@
 import { isEnvironmentEnabled, resolveConfig } from './config.js';
 import { RelatedPostsEngine } from './engine.js';
+import type { ResolvedConfig } from './types.js';
 
 export function registerPlugin(hexo: any): RelatedPostsEngine | undefined {
   if (!hexo || !hexo.extend || !hexo.extend.filter) {
     return undefined;
   }
 
-  const rawConfig = hexo.config ? hexo.config.related_posts : undefined;
-  const resolvedConfig = resolveConfig(rawConfig);
-
-  // Store resolved config back to hexo.config for template / theme access
-  if (hexo.config) {
-    hexo.config.related_posts = resolvedConfig;
+  // Prevent duplicate registration
+  if (hexo.__hexo_related_posts_engine) {
+    return hexo.__hexo_related_posts_engine;
   }
 
-  const isEnvEnabled = isEnvironmentEnabled(
-    resolvedConfig.enable_env_name,
+  const getEffectiveConfig = (): ResolvedConfig => {
+    const raw =
+      (hexo.config && hexo.config.related_posts) ||
+      (hexo.theme && hexo.theme.config && hexo.theme.config.related_posts) ||
+      undefined;
+    const resolved = resolveConfig(raw);
+    // Ensure hexo.config has it so theme templates / css (hexo-config('related_posts...')) see it
+    if (hexo.config) {
+      hexo.config.related_posts = resolved;
+    }
+    return resolved;
+  };
+
+  const initialConfig = getEffectiveConfig();
+  const rawProvidedConfig =
+    (hexo.config && hexo.config.related_posts) ||
+    (hexo.theme && hexo.theme.config && hexo.theme.config.related_posts);
+
+  const isInitialEnvEnabled = isEnvironmentEnabled(
+    initialConfig.enable_env_name,
     hexo.env && hexo.env.args ? hexo.env.args : undefined
   );
 
-  if (!resolvedConfig.enable || !isEnvEnabled) {
+  if (rawProvidedConfig && (!initialConfig.enable || !isInitialEnvEnabled)) {
     if (hexo.log && typeof hexo.log.debug === 'function') {
       hexo.log.debug('[hexo-related-posts2] Plugin execution skipped (disabled by config or environment).');
     }
@@ -27,6 +43,7 @@ export function registerPlugin(hexo: any): RelatedPostsEngine | undefined {
   }
 
   const engine = new RelatedPostsEngine();
+  hexo.__hexo_related_posts_engine = engine;
 
   // Attach dynamic getter to Hexo Post Document prototype so any Post instance accesses related_posts seamlessly
   try {
@@ -55,6 +72,20 @@ export function registerPlugin(hexo: any): RelatedPostsEngine | undefined {
 
   // 1. Compute BM25 relations before generating files
   hexo.extend.filter.register('before_generate', async function (this: any) {
+    const resolvedConfig = getEffectiveConfig();
+
+    const isEnvEnabled = isEnvironmentEnabled(
+      resolvedConfig.enable_env_name,
+      hexo.env && hexo.env.args ? hexo.env.args : undefined
+    );
+
+    if (!resolvedConfig.enable || !isEnvEnabled) {
+      if (hexo.log && typeof hexo.log.debug === 'function') {
+        hexo.log.debug('[hexo-related-posts2] Skipped (disabled by config or environment).');
+      }
+      return;
+    }
+
     if (this && this.locals && typeof this.locals.invalidate === 'function') {
       this.locals.invalidate();
     }
